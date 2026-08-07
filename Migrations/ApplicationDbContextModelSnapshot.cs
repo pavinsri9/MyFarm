@@ -22,6 +22,52 @@ namespace MyFarmAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("MyFarmAPI.Models.Entity.Cow", b =>
+                {
+                    b.Property<int>("PId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PId"));
+
+                    b.Property<string>("CowName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("PId");
+
+                    b.ToTable("Cows", (string)null);
+                });
+
+            modelBuilder.Entity("MyFarmAPI.Models.Entity.MilkEntry", b =>
+                {
+                    b.Property<int>("MilkEntryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MilkEntryId"));
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<int>("FId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("MilkQuantity")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MilkEntryId");
+
+                    b.HasIndex("FId");
+
+                    b.ToTable("MilkEntries", (string)null);
+                });
+
             modelBuilder.Entity("MyFarmAPI.Models.Entity.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -57,6 +103,17 @@ namespace MyFarmAPI.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MyFarmAPI.Models.Entity.MilkEntry", b =>
+                {
+                    b.HasOne("MyFarmAPI.Models.Entity.Cow", "Cow")
+                        .WithMany()
+                        .HasForeignKey("FId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cow");
                 });
 #pragma warning restore 612, 618
         }

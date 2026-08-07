@@ -12,10 +12,14 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Cow> Cows => Set<Cow>();
+    public DbSet<MilkEntry> MilkEntries => Set<MilkEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new CowConfiguration());
+        modelBuilder.ApplyConfiguration(new MilkEntryConfiguration());
     }
 }

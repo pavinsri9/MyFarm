@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using MyFarmAPI.Configurations;
 using MyFarmAPI.Data;
 using MyFarmAPI.Repositories.Implementation;
@@ -44,38 +44,27 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Configure SwaggerGen with JWT Authorization Security Definition
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "MyFarm API",
-        Version = "v1",
-        Description = "MyFarm Web API Documentation with JWT Auth"
+        Version = "v1"
     });
 
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Input your JWT token in format: Bearer {token}"
+        Description = "Enter your JWT token"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
     {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
     });
 });
 
@@ -89,23 +78,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICowRepository, CowRepository>();
+builder.Services.AddScoped<ICowService, CowService>();
+builder.Services.AddScoped<IMilkEntryRepository, MilkEntryRepository>();
+builder.Services.AddScoped<IMilkEntryService, MilkEntryService>();
 
 var app = builder.Build();
 
-// Enable static files serving (for custom Swagger UI dark mode CSS)
-app.UseStaticFiles();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyFarm API v1");
-        c.InjectStylesheet("/swagger-ui/custom-dark.css");
-        c.DocumentTitle = "MyFarm API - Swagger UI (Dark Mode)";
-    });
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

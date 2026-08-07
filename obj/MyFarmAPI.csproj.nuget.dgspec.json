@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\C\\MyFarm-main\\MyFarmAPI.csproj": {}
+    "D:\\C\\MyFarm\\MyFarmAPI.csproj": {}
   },
   "projects": {
-    "D:\\C\\MyFarm-main\\MyFarmAPI.csproj": {
+    "D:\\C\\MyFarm\\MyFarmAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\C\\MyFarm-main\\MyFarmAPI.csproj",
+        "projectUniqueName": "D:\\C\\MyFarm\\MyFarmAPI.csproj",
         "projectName": "MyFarmAPI",
-        "projectPath": "D:\\C\\MyFarm-main\\MyFarmAPI.csproj",
+        "projectPath": "D:\\C\\MyFarm\\MyFarmAPI.csproj",
         "packagesPath": "C:\\Users\\PAVIN\\.nuget\\packages\\",
-        "outputPath": "D:\\C\\MyFarm-main\\obj\\",
+        "outputPath": "D:\\C\\MyFarm\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PAVIN\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -68,17 +68,13 @@
               "target": "Package",
               "version": "[9.0.3, )"
             },
-            "Microsoft.OpenApi": {
-              "target": "Package",
-              "version": "[1.6.22, )"
-            },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[10.2.1, )"
             }
           },
           "imports": [

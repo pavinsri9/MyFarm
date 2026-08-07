@@ -51,8 +51,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         {
             Token = tokenString,
             UserId = user.UserId,
-            UserName = user.UserName,
-            Expiration = expiresAt
+            UserName = user.UserName
         };
     }
 }
