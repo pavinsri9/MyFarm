@@ -15,17 +15,17 @@ jobs:
 
       - name: Stop existing container
         run: |
-          sudo docker stop MyFarmApi || true
-          sudo docker rm MyFarmApi || true
+          sudo docker stop my-farm || true
+          sudo docker rm my-farm || true
 
       - name: Remove old image
         run: |
-          sudo docker image rm MyFarmApi:latest || true
+          sudo docker image rm my-farm:latest || true
 
       - name: Build Docker image
         run: |
           sudo docker build \
-            -t MyFarmApi:latest \
+            -t my-farm:latest \
             .
 
       - name: Build and deploy
