@@ -1,0 +1,36 @@
+name: My Farm API Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+
+      - name: Stop existing container
+        run: |
+          docker stop MyFarmApi || true
+          docker rm MyFarmApi || true
+
+      - name: Remove old image
+        run: |
+          docker image rm MyFarmApi:latest || true
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t MyFarmApi:latest \
+            .
+
+      - name: Build and deploy
+        run: |
+          docker compose down
+          docker compose build
+          docker compose up -d
+
