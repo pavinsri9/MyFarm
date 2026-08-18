@@ -73,6 +73,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+
+
 // Register Repository and Service layer dependencies
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -84,7 +86,13 @@ builder.Services.AddScoped<IMilkEntryRepository, MilkEntryRepository>();
 builder.Services.AddScoped<IMilkEntryService, MilkEntryService>();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
 
+    dbContext.Database.Migrate();
+}
 app.UseSwagger();
 app.UseSwaggerUI();
 
